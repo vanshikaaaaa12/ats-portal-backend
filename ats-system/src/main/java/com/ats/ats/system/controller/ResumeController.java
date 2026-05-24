@@ -156,21 +156,21 @@ public class ResumeController {
 
                 OkHttpClient client =
                 new OkHttpClient();
-String prompt =
 
-"Analyze this resume like an ATS system. "
-+ "Give short professional feedback "
-+ "in points only. "
-+ "Keep response under 200 words. "
-+ "Include ATS score, missing skills, "
-+ "project feedback and improvements.\n\n";
+                text = text
+                .replace("\n", " ")
+                .replace("\r", " ")
+                .replace("\"", "");
 
-text = text
-.replace("\n", " ")
-.replace("\r", " ")
-.replace("\"", "");
+                String prompt =
 
-prompt += text;
+                "Analyze this resume like an ATS system. "
+                + "Give short professional feedback "
+                + "in points only. "
+                + "Keep response under 200 words. "
+                + "Include ATS score, missing skills, "
+                + "project feedback and improvements. "
+                + text;
 
                 String json = """
                 {
@@ -182,7 +182,7 @@ prompt += text;
                     }
                   ]
                 }
-                """.formatted(prompt.replace("\"", ""));
+                """.formatted(prompt);
 
                 okhttp3.RequestBody body =
 
