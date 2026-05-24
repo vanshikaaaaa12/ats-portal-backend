@@ -177,7 +177,7 @@ public class ResumeController {
 
                       int start = responseData.indexOf("\"content\":\"") + 11;
 
-int end = responseData.indexOf("\",\"refusal\"");
+int end = responseData.indexOf("\"}", start);
 
 aiSuggestion = responseData.substring(start, end);
 
