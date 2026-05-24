@@ -17,13 +17,9 @@ public class ResumeController {
 
         try{
 
-            // SAVE PDF FILE
-
             File savedFile = File.createTempFile("resume", ".pdf");
 
             file.transferTo(savedFile);
-
-            // READ PDF TEXT
 
             PDDocument document = PDDocument.load(savedFile);
 
@@ -33,15 +29,11 @@ public class ResumeController {
 
             document.close();
 
-            // ATS SCORE LOGIC
-
             int score = 50;
 
             String result = "";
 
             String suggestions = "";
-
-            // JAVA
 
             if(text.contains("java")){
 
@@ -56,8 +48,6 @@ public class ResumeController {
 
             }
 
-            // PYTHON
-
             if(text.contains("python")){
 
                 score += 10;
@@ -70,8 +60,6 @@ public class ResumeController {
                 suggestions += "Add Python Skill\n";
 
             }
-
-            // SQL
 
             if(text.contains("sql")){
 
@@ -86,8 +74,6 @@ public class ResumeController {
 
             }
 
-            // SPRING BOOT
-
             if(text.contains("spring boot")){
 
                 score += 10;
@@ -100,8 +86,6 @@ public class ResumeController {
                 suggestions += "Add Spring Boot Project\n";
 
             }
-
-            // CERTIFICATES
 
             if(text.contains("certificate")){
 
@@ -116,9 +100,8 @@ public class ResumeController {
 
             }
 
-            // EXPERIENCE
-
-            if(text.contains("internship") || text.contains("experience")){
+            if(text.contains("internship")
+            || text.contains("experience")){
 
                 score += 10;
                 result += "Experience Detected\n";
@@ -131,21 +114,22 @@ public class ResumeController {
 
             }
 
-            // AI ANALYSIS
-
             String aiSuggestion = "";
 
             try{
 
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client =
+                new OkHttpClient();
 
                 String prompt =
-                
-        "Analyze this resume like an ATS system. "
-        + "Give short professional feedback in points only. "
-        + "Keep response under 200 words. "
-        + "Include ATS score, missing skills, project feedback and improvements.\n\n"
-        + text;
+
+                "Analyze this resume like an ATS system. "
+                + "Give short professional feedback in points only. "
+                + "Keep response under 200 words. "
+                + "Include ATS score, missing skills, "
+                + "project feedback and improvements.\n\n"
+                + text;
+
                 String json = """
                 {
                   "model": "deepseek/deepseek-chat",
@@ -159,64 +143,105 @@ public class ResumeController {
                 """.formatted(prompt.replace("\"", ""));
 
                 okhttp3.RequestBody body =
-                        okhttp3.RequestBody.create(
-                                json,
-                                okhttp3.MediaType.get("application/json")
-                        );
 
-                Request request = new Request.Builder()
-                        .url("https://openrouter.ai/api/v1/chat/completions")
-                        .addHeader("Authorization", "Bearer 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")
-                        .addHeader("Content-Type", "application/json")
-                        .post(body)
-                        .build();
+                okhttp3.RequestBody.create(
+                        json,
+                        okhttp3.MediaType.get(
+                        "application/json")
+                );
 
-                Response response = client.newCall(request).execute();
+                Request request =
+                new Request.Builder()
 
-                String responseData = response.body().string();
+                .url(
+                "https://openrouter.ai/api/v1/chat/completions"
+                )
 
-                      int start = responseData.indexOf("\"content\":\"") + 11;
+                .addHeader(
+                "Authorization",
+                "Bearer YOUR_OPENROUTER_API_KEY"
+                )
 
-int end = responseData.indexOf("\"}", start);
+                .addHeader(
+                "Content-Type",
+                "application/json"
+                )
 
-aiSuggestion = responseData.substring(start, end);
+                .post(body)
 
-aiSuggestion = aiSuggestion
-        .replace("\\n", "\n")
-        .replace("###", "")
-        .replace("**", "");
+                .build();
+
+                Response response =
+                client.newCall(request).execute();
+
+                String responseData =
+                response.body().string();
+
+                if(responseData.contains("\"content\":\"")){
+
+                    int start =
+                    responseData.indexOf(
+                    "\"content\":\"") + 11;
+
+                    int end =
+                    responseData.indexOf(
+                    "\"", start);
+
+                    aiSuggestion =
+                    responseData.substring(
+                    start,
+                    end
+                    );
+
+                }
+
+                else{
+
+                    aiSuggestion =
+                    "AI feedback currently unavailable.";
+
+                }
+
+                aiSuggestion =
+                aiSuggestion
+
+                .replace("\\n", "\n")
+
+                .replace("###", "")
+
+                .replace("**", "");
 
             }
 
             catch(Exception e){
 
-                aiSuggestion = e.getMessage();
+                aiSuggestion =
+                "AI Error : " + e.getMessage();
 
             }
-
-            // COMPANY ELIGIBILITY
 
             String company = "";
 
             if(score >= 90){
 
-                company = "Eligible for TCS, Infosys, Accenture";
+                company =
+                "Eligible for TCS, Infosys, Accenture";
 
             }
 
             else if(score >= 75){
 
-                company = "Eligible for Wipro and Capgemini";
+                company =
+                "Eligible for Wipro and Capgemini";
 
             }
 
             else{
 
-                company = "Need Resume Improvement";
+                company =
+                "Need Resume Improvement";
 
             }
-
-            // FINAL OUTPUT
 
             return "ATS Score : "
                     + score
