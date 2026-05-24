@@ -156,16 +156,21 @@ public class ResumeController {
 
                 OkHttpClient client =
                 new OkHttpClient();
+String prompt =
 
-                String prompt =
+"Analyze this resume like an ATS system. "
++ "Give short professional feedback "
++ "in points only. "
++ "Keep response under 200 words. "
++ "Include ATS score, missing skills, "
++ "project feedback and improvements.\n\n";
 
-                "Analyze this resume like an ATS system. "
-                + "Give short professional feedback "
-                + "in points only. "
-                + "Keep response under 200 words. "
-                + "Include ATS score, missing skills, "
-                + "project feedback and improvements.\n\n"
-                + text;
+text = text
+.replace("\n", " ")
+.replace("\r", " ")
+.replace("\"", "");
+
+prompt += text;
 
                 String json = """
                 {
