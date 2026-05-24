@@ -169,7 +169,7 @@ public class ResumeController {
 
                 String json = """
                 {
-                  "model": "openai/gpt-3.5-turbo",
+                  "model": "llama3-8b-8192",
                   "messages": [
                     {
                       "role": "user",
@@ -191,12 +191,12 @@ public class ResumeController {
                 new Request.Builder()
 
                 .url(
-                "https://openrouter.ai/api/v1/chat/completions"
+                "https://api.groq.com/openai/v1/chat/completions"
                 )
 
                 .addHeader(
                 "Authorization",
-                "Bearer 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"
+                "Bearer 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"
                 )
 
                 .addHeader(
