@@ -17,23 +17,21 @@ public class ResumeController {
 
         try{
 
-            // SAVE PDF FILE
-
-            File savedFile = File.createTempFile("resume", ".pdf");
+            File savedFile =
+            File.createTempFile("resume", ".pdf");
 
             file.transferTo(savedFile);
 
-            // READ PDF TEXT
+            PDDocument document =
+            PDDocument.load(savedFile);
 
-            PDDocument document = PDDocument.load(savedFile);
+            PDFTextStripper pdfStripper =
+            new PDFTextStripper();
 
-            PDFTextStripper pdfStripper = new PDFTextStripper();
-
-            String text = pdfStripper.getText(document).toLowerCase();
+            String text =
+            pdfStripper.getText(document).toLowerCase();
 
             document.close();
-
-            // ATS SCORE
 
             int score = 50;
 
@@ -47,13 +45,15 @@ public class ResumeController {
 
                 score += 10;
 
-                result += "Java Skill Detected\n";
+                result +=
+                "Java Skill Detected\n";
 
             }
 
             else{
 
-                suggestions += "Add Java Skill\n";
+                suggestions +=
+                "Add Java Skill\n";
 
             }
 
@@ -63,13 +63,15 @@ public class ResumeController {
 
                 score += 10;
 
-                result += "Python Skill Detected\n";
+                result +=
+                "Python Skill Detected\n";
 
             }
 
             else{
 
-                suggestions += "Add Python Skill\n";
+                suggestions +=
+                "Add Python Skill\n";
 
             }
 
@@ -79,13 +81,15 @@ public class ResumeController {
 
                 score += 10;
 
-                result += "SQL Skill Detected\n";
+                result +=
+                "SQL Skill Detected\n";
 
             }
 
             else{
 
-                suggestions += "Add SQL Skill\n";
+                suggestions +=
+                "Add SQL Skill\n";
 
             }
 
@@ -95,13 +99,15 @@ public class ResumeController {
 
                 score += 10;
 
-                result += "Spring Boot Skill Detected\n";
+                result +=
+                "Spring Boot Skill Detected\n";
 
             }
 
             else{
 
-                suggestions += "Add Spring Boot Project\n";
+                suggestions +=
+                "Add Spring Boot Project\n";
 
             }
 
@@ -111,13 +117,15 @@ public class ResumeController {
 
                 score += 10;
 
-                result += "Certificates Found\n";
+                result +=
+                "Certificates Found\n";
 
             }
 
             else{
 
-                suggestions += "Add Certifications\n";
+                suggestions +=
+                "Add Certifications\n";
 
             }
 
@@ -128,7 +136,8 @@ public class ResumeController {
 
                 score += 10;
 
-                result += "Experience Detected\n";
+                result +=
+                "Experience Detected\n";
 
             }
 
@@ -185,11 +194,10 @@ public class ResumeController {
                 "https://openrouter.ai/api/v1/chat/completions"
                 )
 
-                
-.addHeader(
-"Authorization",
-"Bearer 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"
-)                
+                .addHeader(
+                "Authorization",
+                "Bearer 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"
+                )
 
                 .addHeader(
                 "Content-Type",
@@ -206,39 +214,7 @@ public class ResumeController {
                 String responseData =
                 response.body().string();
 
-                if(responseData.contains("\"content\":\"")){
-
-                    int start =
-                    responseData.indexOf(
-                    "\"content\":\"") + 11;
-
-                    int end =
-                    responseData.indexOf(
-                    "\"", start);
-
-                    aiSuggestion =
-                    responseData.substring(
-                    start,
-                    end
-                    );
-
-                }
-
-                else{
-
-                    aiSuggestion =
-                    "AI feedback currently unavailable.";
-
-                }
-
-                aiSuggestion =
-                aiSuggestion
-
-                .replace("\\n", "\n")
-
-                .replace("###", "")
-
-                .replace("**", "");
+                aiSuggestion = responseData;
 
             }
 
@@ -248,8 +224,6 @@ public class ResumeController {
                 "AI Error : " + e.getMessage();
 
             }
-
-            // COMPANY ELIGIBILITY
 
             String company = "";
 
@@ -273,8 +247,6 @@ public class ResumeController {
                 "Need Resume Improvement";
 
             }
-
-            // FINAL OUTPUT
 
             return "ATS Score : "
                     + score
