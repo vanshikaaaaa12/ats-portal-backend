@@ -17,9 +17,13 @@ public class ResumeController {
 
         try{
 
+            // SAVE PDF FILE
+
             File savedFile = File.createTempFile("resume", ".pdf");
 
             file.transferTo(savedFile);
+
+            // READ PDF TEXT
 
             PDDocument document = PDDocument.load(savedFile);
 
@@ -29,15 +33,20 @@ public class ResumeController {
 
             document.close();
 
+            // ATS SCORE
+
             int score = 50;
 
             String result = "";
 
             String suggestions = "";
 
+            // JAVA
+
             if(text.contains("java")){
 
                 score += 10;
+
                 result += "Java Skill Detected\n";
 
             }
@@ -48,9 +57,12 @@ public class ResumeController {
 
             }
 
+            // PYTHON
+
             if(text.contains("python")){
 
                 score += 10;
+
                 result += "Python Skill Detected\n";
 
             }
@@ -61,9 +73,12 @@ public class ResumeController {
 
             }
 
+            // SQL
+
             if(text.contains("sql")){
 
                 score += 10;
+
                 result += "SQL Skill Detected\n";
 
             }
@@ -74,9 +89,12 @@ public class ResumeController {
 
             }
 
+            // SPRING BOOT
+
             if(text.contains("spring boot")){
 
                 score += 10;
+
                 result += "Spring Boot Skill Detected\n";
 
             }
@@ -87,9 +105,12 @@ public class ResumeController {
 
             }
 
+            // CERTIFICATES
+
             if(text.contains("certificate")){
 
                 score += 10;
+
                 result += "Certificates Found\n";
 
             }
@@ -100,19 +121,25 @@ public class ResumeController {
 
             }
 
+            // EXPERIENCE
+
             if(text.contains("internship")
             || text.contains("experience")){
 
                 score += 10;
+
                 result += "Experience Detected\n";
 
             }
 
             else{
 
-                suggestions += "Add Internship or Experience\n";
+                suggestions +=
+                "Add Internship or Experience\n";
 
             }
+
+            // AI ANALYSIS
 
             String aiSuggestion = "";
 
@@ -124,7 +151,8 @@ public class ResumeController {
                 String prompt =
 
                 "Analyze this resume like an ATS system. "
-                + "Give short professional feedback in points only. "
+                + "Give short professional feedback "
+                + "in points only. "
                 + "Keep response under 200 words. "
                 + "Include ATS score, missing skills, "
                 + "project feedback and improvements.\n\n"
@@ -132,7 +160,7 @@ public class ResumeController {
 
                 String json = """
                 {
-                  "model": "deepseek/deepseek-chat",
+                  "model": "openai/gpt-3.5-turbo",
                   "messages": [
                     {
                       "role": "user",
@@ -157,10 +185,11 @@ public class ResumeController {
                 "https://openrouter.ai/api/v1/chat/completions"
                 )
 
-                .addHeader(
-                "Authorization",
-                "Bearer YOUR_OPENROUTER_API_KEY"
-                )
+                
+.addHeader(
+"Authorization",
+"Bearer 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"
+)                
 
                 .addHeader(
                 "Content-Type",
@@ -220,6 +249,8 @@ public class ResumeController {
 
             }
 
+            // COMPANY ELIGIBILITY
+
             String company = "";
 
             if(score >= 90){
@@ -242,6 +273,8 @@ public class ResumeController {
                 "Need Resume Improvement";
 
             }
+
+            // FINAL OUTPUT
 
             return "ATS Score : "
                     + score
