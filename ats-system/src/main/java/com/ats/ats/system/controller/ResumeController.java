@@ -160,7 +160,7 @@ public class ResumeController {
                 text = text
                 .replace("\n", " ")
                 .replace("\r", " ")
-                .replace("\"", "");
+                .replace("\"", "'");
 
                 String prompt =
 
@@ -172,17 +172,12 @@ public class ResumeController {
                 + "project feedback and improvements. "
                 + text;
 
-                String json = """
-                {
-                  "model": "llama3-8b-8192",
-                  "messages": [
-                    {
-                      "role": "user",
-                      "content": "%s"
-                    }
-                  ]
-                }
-                """.formatted(prompt);
+                String json =
+                "{\"model\":\"llama3-8b-8192\","
+                + "\"messages\":["
+                + "{\"role\":\"user\","
+                + "\"content\":\"" + prompt + "\"}"
+                + "]}";
 
                 okhttp3.RequestBody body =
 
