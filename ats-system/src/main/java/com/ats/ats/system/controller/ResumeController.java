@@ -196,7 +196,7 @@ public class ResumeController {
 
                 .addHeader(
                 "Authorization",
-                "Bearer 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"
+                "Bearer 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"
                 )
 
                 .addHeader(
