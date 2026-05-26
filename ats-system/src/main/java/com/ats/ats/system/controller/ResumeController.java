@@ -173,7 +173,7 @@ public class ResumeController {
                 + text;
 
                 String json =
-                "{\"model\":\"llama3-8b-8192\","
+                "{\"model\":\"llama-3.1-8b-instant\","
                 + "\"messages\":["
                 + "{\"role\":\"user\","
                 + "\"content\":\"" + prompt + "\"}"
@@ -196,7 +196,7 @@ public class ResumeController {
 
                 .addHeader(
                 "Authorization",
-                "Bearer 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"
+                "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"
                 )
 
                 .addHeader(
