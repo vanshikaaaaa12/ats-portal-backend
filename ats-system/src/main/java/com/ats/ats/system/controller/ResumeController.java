@@ -1,8 +1,14 @@
 package com.ats.ats.system.controller;
 
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -167,10 +173,11 @@ public class ResumeController {
                 "Analyze this resume like an ATS system. "
                 + "Give short professional feedback "
                 + "in points only. "
-                + "Keep response under 200 words. "
-                + "Include ATS score, missing skills, "
-                + "project feedback and improvements. "
+                + "Keep response under 150 words. "
                 + text;
+
+                String apiKey =
+                System.getenv("GROQ_API_KEY");
 
                 String json =
                 "{\"model\":\"llama-3.1-8b-instant\","
@@ -179,13 +186,11 @@ public class ResumeController {
                 + "\"content\":\"" + prompt + "\"}"
                 + "]}";
 
-                okhttp3.RequestBody body =
+                MediaType mediaType =
+                MediaType.parse("application/json");
 
-                okhttp3.RequestBody.create(
-                        json,
-                        okhttp3.MediaType.get(
-                        "application/json")
-                );
+                RequestBody body =
+                RequestBody.create(json, mediaType);
 
                 Request request =
                 new Request.Builder()
@@ -196,7 +201,7 @@ public class ResumeController {
 
                 .addHeader(
                 "Authorization",
-               "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"
+                "Bearer " + apiKey
                 )
 
                 .addHeader(
