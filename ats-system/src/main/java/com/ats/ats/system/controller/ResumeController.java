@@ -196,7 +196,7 @@ public class ResumeController {
 
                 .addHeader(
                 "Authorization",
-                "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"
+               "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"
                 )
 
                 .addHeader(
