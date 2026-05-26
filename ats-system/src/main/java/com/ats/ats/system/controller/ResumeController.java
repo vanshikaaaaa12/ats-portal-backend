@@ -219,7 +219,31 @@ public class ResumeController {
                 String responseData =
                 response.body().string();
 
-                aiSuggestion = responseData;
+                int start =
+                responseData.indexOf("\"content\":\"");
+
+                if(start != -1){
+
+                    start = start + 11;
+
+                    int end =
+                    responseData.indexOf("\"}", start);
+
+                    aiSuggestion =
+                    responseData.substring(start, end)
+
+                    .replace("\\n", "\n")
+                    .replace("**", "")
+                    .replace("\\\"", "\"");
+
+                }
+
+                else{
+
+                    aiSuggestion =
+                    "AI Analysis Not Available";
+
+                }
 
             }
 
