@@ -39,121 +39,6 @@ public class ResumeController {
 
             document.close();
 
-            int score = 50;
-
-            String result = "";
-
-            String suggestions = "";
-
-            // JAVA
-
-            if(text.contains("java")){
-
-                score += 10;
-
-                result +=
-                "Java Skill Detected\n";
-
-            }
-
-            else{
-
-                suggestions +=
-                "Add Java Skill\n";
-
-            }
-
-            // PYTHON
-
-            if(text.contains("python")){
-
-                score += 10;
-
-                result +=
-                "Python Skill Detected\n";
-
-            }
-
-            else{
-
-                suggestions +=
-                "Add Python Skill\n";
-
-            }
-
-            // SQL
-
-            if(text.contains("sql")){
-
-                score += 10;
-
-                result +=
-                "SQL Skill Detected\n";
-
-            }
-
-            else{
-
-                suggestions +=
-                "Add SQL Skill\n";
-
-            }
-
-            // SPRING BOOT
-
-            if(text.contains("spring boot")){
-
-                score += 10;
-
-                result +=
-                "Spring Boot Skill Detected\n";
-
-            }
-
-            else{
-
-                suggestions +=
-                "Add Spring Boot Project\n";
-
-            }
-
-            // CERTIFICATES
-
-            if(text.contains("certificate")){
-
-                score += 10;
-
-                result +=
-                "Certificates Found\n";
-
-            }
-
-            else{
-
-                suggestions +=
-                "Add Certifications\n";
-
-            }
-
-            // EXPERIENCE
-
-            if(text.contains("internship")
-            || text.contains("experience")){
-
-                score += 10;
-
-                result +=
-                "Experience Detected\n";
-
-            }
-
-            else{
-
-                suggestions +=
-                "Add Internship or Experience\n";
-
-            }
-
             // AI ANALYSIS
 
             String aiSuggestion = "";
@@ -170,11 +55,11 @@ public class ResumeController {
 
                 String prompt =
 
-                "Analyze this resume like an ATS system. "
-                + "Give short professional feedback "
-                + "in points only. "
-                + "Keep response under 150 words. "
-                + text;
+"You are an ATS Resume Analyzer. "
++ "Strictly start response with ATS Score in this format only: ATS Score: XX/100. "
++ "Then give strengths, missing skills, resume improvements and job eligibility in points. "
++ "Keep response professional and under 150 words. "
++ text;
 
                 String apiKey =
                 System.getenv("GROQ_API_KEY");
@@ -254,39 +139,7 @@ public class ResumeController {
 
             }
 
-            String company = "";
-
-            if(score >= 90){
-
-                company =
-                "Eligible for TCS, Infosys, Accenture";
-
-            }
-
-            else if(score >= 75){
-
-                company =
-                "Eligible for Wipro and Capgemini";
-
-            }
-
-            else{
-
-                company =
-                "Need Resume Improvement";
-
-            }
-
-            return "ATS Score : "
-                    + score
-                    + "%\n\n"
-                    + result
-                    + "\n"
-                    + company
-                    + "\n\nSuggestions:\n"
-                    + suggestions
-                    + "\n\nAI Analysis:\n"
-                    + aiSuggestion;
+            return aiSuggestion;
 
         }
 
